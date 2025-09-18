@@ -1,5 +1,6 @@
 package dev.java10x.CadastroDeNinjas.Ninjas;
 
+import dev.java10x.CadastroDeNinjas.Missoes.MissoesModel;
 import jakarta.persistence.*;
 
 // Entity
@@ -15,6 +16,13 @@ public class NinjaModel {
     private String nome;
     private String email;
     private int idade;
+
+    // Um ninja tem uma única missão, mas uma missão pode ser atribuída a mais de um ninja
+    // Para facilitar -> o "Many" se refere a classe em questão, no caso "Ninja", e "One" se refere a classe relacionada,
+    // no caso "Missoes" (muitos ninjas podem ter uma única missão)
+    @ManyToOne
+    @JoinColumn(name = "missoes_id") // Chave Estrangeira
+    private MissoesModel missoes;
 
     public NinjaModel() {
     }
