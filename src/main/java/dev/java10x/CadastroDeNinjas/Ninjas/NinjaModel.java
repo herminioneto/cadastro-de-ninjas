@@ -20,7 +20,10 @@ public class NinjaModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+
+    @Column(unique = true)
     private String email;
+
     private int idade;
 
     // Um ninja tem uma única missão, mas uma missão pode ser atribuída a mais de um ninja
