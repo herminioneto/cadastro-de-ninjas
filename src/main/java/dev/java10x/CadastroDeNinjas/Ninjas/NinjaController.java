@@ -1,5 +1,7 @@
 package dev.java10x.CadastroDeNinjas.Ninjas;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +23,10 @@ public class NinjaController {
 
     // Adicionar ninja
     @PostMapping("/criar")
-    public NinjaDTO criarNinja(@RequestBody NinjaDTO ninja) {
-        return ninjaService.criarNinja(ninja);
+    public ResponseEntity<String> criarNinja(@RequestBody NinjaDTO ninja) {
+        NinjaDTO novoNinja = ninjaService.criarNinja(ninja);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body("Ninja criado com sucesso! Nome do ninja: " + novoNinja.getNome());
     }
 
     // Mostrar todos os ninjas
@@ -46,7 +50,14 @@ public class NinjaController {
 
     // Deletar ninja
     @DeleteMapping("/deletar/{id}")
-    public void deletarNinjaPorId(@PathVariable Long id) {
-        ninjaService.deletarNinjaPorId(id);
+    public ResponseEntity<String> deletarNinjaPorId(@PathVariable Long id) {
+        if (ninjaService.listarNinjaPorId(id) != null){
+            ninjaService.deletarNinjaPorId(id);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body("Ninja de id " + id + " deletado com sucesso.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("O ninja com o id " + id + " não foi encontrado.");
+        }
     }
 }
