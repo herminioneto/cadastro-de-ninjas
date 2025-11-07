@@ -21,7 +21,6 @@ public class NinjaController {
         return "Hello Spring";
     }
 
-    // Adicionar ninja
     @PostMapping("/criar")
     public ResponseEntity<String> criarNinja(@RequestBody NinjaDTO ninja) {
         NinjaDTO novoNinja = ninjaService.criarNinja(ninja);
@@ -29,26 +28,35 @@ public class NinjaController {
                 .body("Ninja criado com sucesso! Nome do ninja: " + novoNinja.getNome());
     }
 
-    // Mostrar todos os ninjas
     @GetMapping("/listar")
-    public List<NinjaDTO> listarNinjas() {
-        return ninjaService.listarNinjas();
+    public ResponseEntity<List<NinjaDTO>> listarNinjas() {
+        List<NinjaDTO> ninjas = ninjaService.listarNinjas();
+        return ResponseEntity.ok(ninjas);
     }
 
-    // Procurar ninja por id
     @GetMapping("/listar/{id}")
-    public NinjaDTO listarNinjaPorId(@PathVariable Long id) {
-        return ninjaService.listarNinjaPorId(id);
+    public ResponseEntity<?> listarNinjaPorId(@PathVariable Long id) {
+        NinjaDTO ninja = ninjaService.listarNinjaPorId(id);
+        if (ninja != null) {
+            return ResponseEntity.ok(ninja);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("O ninja com id " + id + " não existe nos nossos registros.");
+        }
     }
 
-    // Atualizar dados dos ninjas
-    // O metodo put atualiza todos os campos
     @PutMapping("/atualizar/{id}")
-    public NinjaDTO alterarNinjaPorId(@PathVariable Long id, @RequestBody NinjaDTO ninjaAtualizado) {
-        return ninjaService.atualizarNinja(id, ninjaAtualizado);
+    public ResponseEntity<?> alterarNinjaPorId(@PathVariable Long id, @RequestBody NinjaDTO ninjaAtualizado) {
+        NinjaDTO ninja = ninjaService.atualizarNinja(id, ninjaAtualizado);
+
+        if (ninja != null) {
+            return ResponseEntity.ok(ninja);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("O ninja com o id " + id + " não foi encontrado.");
+        }
     }
 
-    // Deletar ninja
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity<String> deletarNinjaPorId(@PathVariable Long id) {
         if (ninjaService.listarNinjaPorId(id) != null){
