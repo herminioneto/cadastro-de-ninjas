@@ -17,14 +17,12 @@ public class MissoesService {
         this.missoesMapper = missoesMapper;
     }
 
-    // Criar uma nova missao
     public MissoesDTO criarMissao(MissoesDTO missaoDTO) {
         MissoesModel missao = missoesMapper.map(missaoDTO);
         missao = missoesRepository.save(missao);
         return missoesMapper.map(missao);
     }
 
-    // Listar todas as missoes
     public List<MissoesDTO> listarMissoes() {
         List<MissoesModel> missoes = missoesRepository.findAll();
         return missoes.stream()
@@ -32,13 +30,11 @@ public class MissoesService {
                 .collect(Collectors.toList());
     }
 
-    // Listar missoes por ID
     public MissoesDTO listarMissaoPorId(Long id) {
         Optional<MissoesModel> missaoPorId = missoesRepository.findById(id);
         return missaoPorId.map(missoesMapper::map).orElse(null);
     }
 
-    // Atualizar uma missao
     public MissoesDTO atualizarMissao(Long id, MissoesDTO missaoDTO) {
         Optional<MissoesModel> missaoExistente = missoesRepository.findById(id);
         if (missaoExistente.isPresent()) {
@@ -51,7 +47,6 @@ public class MissoesService {
         return null;
     }
 
-    // Deletar uma missao
     public void deletarMissaoPorId(Long id) {
         missoesRepository.deleteById(id);
     }
