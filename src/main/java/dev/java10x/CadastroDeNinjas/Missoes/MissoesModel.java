@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@ToString
 public class MissoesModel {
 
     @Id
@@ -22,7 +24,6 @@ public class MissoesModel {
     private String nome;
     private String dificuldade;
 
-    // Uma missão para muitos ninjas; Um ninja só pode ter uma missão por vez, mas vários ninjas podem estar numa mesma missão
     @OneToMany(mappedBy = "missoes")
     @JsonIgnore
     private List<NinjaModel> ninjas;

@@ -5,15 +5,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-// Entity
-// Transforma uma classe numa entidade no banco de dados
-// JPA -> Java Persistence API
 @Entity
 @Table(name = "tb_cadastro")
-@NoArgsConstructor // Cria um construtor vazio
-@AllArgsConstructor // Cria um construtor com todos os argumentos
-@Data // Cria os getters e setters
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@ToString(exclude = "missoes")
 public class NinjaModel {
 
     @Id
@@ -36,11 +35,8 @@ public class NinjaModel {
     @Column (name = "rank")
     private String rank;
 
-    // Um ninja tem uma única missão, mas uma missão pode ser atribuída a mais de um ninja
-    // Para facilitar -> o "Many" se refere a classe em questão, no caso "Ninja", e "One" se refere a classe relacionada,
-    // no caso "Missoes" (muitos ninjas podem ter uma única missão)
     @ManyToOne
-    @JoinColumn(name = "missoes_id") // Chave Estrangeira
+    @JoinColumn(name = "missoes_id")
     private MissoesModel missoes;
 
 }
